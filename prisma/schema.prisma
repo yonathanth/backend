@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL") 
+}
+
+
+model Employee {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String   
+  startDate  String  
+  jobType    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  price     Float
+  category  String
+  descriptioin String
+  orders    Order[]  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Order {
+  id           String   @id @default(uuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id])
+  customerName String
+  phoneNumber  String
+  quantity     Int
+  status       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+model Stock {
+  id       String      @id @default(uuid())
+  itemName String
+  category String
+  quantity Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Transaction {
+  id        String   @id @default(uuid()) 
+  name      String   
+  category  String   
+  amount    Float    
+  type      String   
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt       
+}
