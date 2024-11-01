@@ -12,6 +12,10 @@ app.use("/api/employees", require("./routes/employeesRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
 app.use("/api/stock", require("./routes/stockRoutes"));
 app.use("/api/finance", require("./routes/financialRoutes"));
+app.use("/api/services", require("./routes/serviceRoutes"));
+app.use("/api/members", require("./routes/membersRoutes"));
+app.use("/api/memberManagement", require("./routes/memberManagementRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 
 app.use(errorHandler);
 
