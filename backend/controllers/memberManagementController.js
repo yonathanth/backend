@@ -18,20 +18,18 @@ const adjustStartDateForFreeze = (startDate, freezeDate) => {
 // Helper function to calculate countdown
 const calculateCountdown = (expirationDate, remainingDays) => {
   const today = new Date();
-
   const daysUntilExpiration = calculateDaysBetween(today, expirationDate);
-
   return Math.min(daysUntilExpiration, remainingDays);
 };
 
-// Fetch user with attendance and service details
+// Fetch user with attendance, service, and profile picture details
 const fetchUserWithDetails = async (userId) => {
   if (!userId) {
     throw new Error("User ID is required to fetch user details.");
   }
   return await prisma.user.findUnique({
     where: {
-      id: userId, // Ensure userId is passed and used here
+      id: userId,
     },
     include: {
       attendance: true,
@@ -63,7 +61,7 @@ const generateBarcode = async (userId) => {
   }
 };
 
-// Get user profile with attendance details, countdown, and status check
+// Get user profile with attendance details, countdown, profile picture, and status check
 const getUserProfile = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const user = await fetchUserWithDetails(id);
@@ -71,17 +69,17 @@ const getUserProfile = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(404).json({
       success: false,
-      message: "User  not found",
+      message: "User not found",
     });
   }
   if (!user.service) {
     return res.status(404).json({
       success: false,
-      message: "User is not Subscribed to any Service",
+      message: "User is not subscribed to any service",
     });
   }
 
-  const { startDate, service, FreezeDate } = user;
+  const { startDate, service, FreezeDate, profilePicture } = user;
   const expirationDate = new Date(startDate);
   expirationDate.setDate(expirationDate.getDate() + service.period);
   const adjustedStartDate = adjustStartDateForFreeze(startDate, FreezeDate);
@@ -110,7 +108,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    data: { ...user, bmi, barcode },
+    data: { ...user, bmi, barcode, profilePicture },
   });
 });
 

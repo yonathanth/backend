@@ -16,6 +16,7 @@ app.use("/api/services", require("./routes/serviceRoutes"));
 app.use("/api/members", require("./routes/membersRoutes"));
 app.use("/api/memberManagement", require("./routes/memberManagementRoutes"));
 app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/api/inventory", require("./routes/inventoryRoutes"));
 
 app.use(errorHandler);
 
